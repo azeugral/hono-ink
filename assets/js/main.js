@@ -71,10 +71,9 @@ document.documentElement.classList.add('js');
     function load() {
       if (loaded) return;
       loaded = true;
-      video.src = video.getAttribute('data-src');
-      // mais lento: menos ruído atrás do texto (reaplicado após carregar, alguns browsers zeram)
-      video.playbackRate = 0.7;
-      video.addEventListener('loadedmetadata', function () { video.playbackRate = 0.7; }, { once: true });
+      // Celular em pé recebe o corte 9:16 (mais leve, mesmo enquadramento que o CSS faria)
+      var portrait = window.matchMedia('(orientation: portrait) and (max-width: 47.99em)').matches;
+      video.src = (portrait && video.getAttribute('data-src-mobile')) || video.getAttribute('data-src');
       video.addEventListener('playing', function () { wrap.classList.add('is-playing'); }, { once: true });
       video.play().catch(function () {});          // autoplay bloqueado: poster segue no lugar
     }
